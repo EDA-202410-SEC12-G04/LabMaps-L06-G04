@@ -59,7 +59,8 @@ def newCatalog():
                'authors': None,
                'tags': None,
                'tagIds': None,
-               'years': None}
+               'years': None,
+               'titles':None}
 
     """
     Esta lista contiene todo los libros encontrados
@@ -120,7 +121,11 @@ def newCatalog():
     La columna 'titles' del archivo books.csv
     """
     # TODO lab 6, agregar el ADT map con newMap()
-    catalog['titles'] = None
+    catalog['titles'] = mp.newMap(10000,
+                                 maptype='PROBING',
+                                 loadfactor=4,
+                                 cmpfunction=compareTitles)
+
 
     return catalog
 
@@ -270,7 +275,8 @@ def addBookTitle(catalog, book):
     """
     Completar la descripcion de addBookTitle
     """
-    pass
+    mp.put(catalog["titles"],book["title"],book)
+    
 
 
 # ==============================
@@ -314,14 +320,18 @@ def getBookByTitle(catalog, title):
     """
     Completar la descripcion de getBookByTitle
     """
-    pass
+    boook_title=mp.get(catalog['titles'], title)
+    if boook_title:
 
+        return me.getValue(boook_title)
+    else:
+        return None
 
 def booksSize(catalog):
     """
     Número de libros en el catago
     """
-    return lt.size(catalog['books'])
+    return lt.size(catalog['books']) 
 
 
 def authorsSize(catalog):
@@ -343,7 +353,7 @@ def titlesSize(catalog):
     """
     Completar la descripcion de titlesSize
     """
-    pass
+    return mp.size(catalog['titles'])
 
 
 # ==============================
@@ -428,7 +438,7 @@ def compareYears(year1, year2):
         return 1
     else:
         return -1
-
+    
 
 def compareTitles(title, book):
     # TODO lab 6, cmp para comparar dos titulos de libros para ADT Map
@@ -441,5 +451,17 @@ def compareTitles(title, book):
     Returns:
         int: retrona 0 si son iguales, 1 si el primero es mayor
         y -1 si el primero es menor
+        
+    copiar y pegar el de arriba (def compareYears(year1, year2):)
+
     """
-    pass
+    
+    title_2 = me.getKey(book)
+    if title== title_2:
+       return 0
+    if title > title_2:
+        return 1
+    else:
+        return -1
+    
+"isbn, titulo, rating"
